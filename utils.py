@@ -27,8 +27,6 @@ def extract_embedding_vectors(responses: dict) -> list:
     return vectors
 
 
-def extract 
-
 def create_metadata_from_dataframe(df, columns: List[str]) -> List[dict]:
     """
     DB의 metadata에 들어갈 데이터를 dataframe의 정해진 columns로만 추출하여 생성
