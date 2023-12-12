@@ -4,7 +4,7 @@ from typing import List
 from openai import OpenAI
 
 
-def get_embeddings(input: List[str]):
+def get_embeddings(input: List[str]) -> dict:
     """
     Returns `response`: `dict_keys(['data', 'model', 'object', 'usage'])`
     """
@@ -18,3 +18,10 @@ def get_embeddings(input: List[str]):
     ).model_dump(mode="python")
 
     return response
+
+
+def extract_embedding_vectors(responses: dict) -> list:
+    vectors = []
+    for response in responses["data"]:
+        vectors.append(response["embedding"])
+    return vectors
