@@ -4,13 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-openai = "*"
-streamlit = "*"
 chromadb = "*"
+openai = "*"
+pandas = "*"
 
 [dev-packages]
-pandas = "*"
-pymongo = "*"
+openpyxl = "*"
 
 [requires]
 python_version = "3.10"
