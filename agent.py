@@ -7,22 +7,23 @@ import pandas as pd
 
 def create_spam(args):
     old_path = args.path
-    save_path = args.save_path
 
-    indexer = Indexer(persist_directory="", collection_name="")
+    indexer = Indexer(persist_directory="db/QA", collection_name="kim")
     collection = indexer.collection
 
     # import old (crew) dataframe and copy it to new dataframe
-    old_df = pd.read_excel(old_path)
-
-    spam = old_df[old_df["2차 검수 요청"] == True]
-    ham = old_df[old_df["2차 검수 요청"] == False]
+    ham = pd.read_excel(old_path)
+    print(ham.shape)
+    # spam = old_df[old_df["2차 검수 요청"] == True]
+    # ham = old_df[old_df["2차 검수 요청"] == False]
 
     # get vector embeddings from ham and store them to chroma DB
-    embeddings = get_embeddings(ham[""].to_list())
+    embeddings = get_embeddings(ham["질문"].to_list())
     embedding_vectors = extract_embedding_vectors(embeddings)
-    documents = ham[""]  # 질문열
-    metadatas = create_metadata_from_dataframe(ham, ["", ""])  # 메타데이터로 저장한 cols
+    documents = ham["질문"].to_list()  # 질문열
+    metadatas = create_metadata_from_dataframe(
+        ham, ["출처", "수정 답변", "납품"]
+    )  # 메타데이터로 저장한 cols
     indices = ham.index.astype("str").to_list()
 
     indexer.add_embeddings(
@@ -33,9 +34,10 @@ def create_spam(args):
     )
 
     # 수정할 spam 파일에 유사 질의응답 열 추가하여 저장
-    spam = indexer.find_alternatives(spam, query_column="")
-
-    save_dataframe(spam, path=save_path, index=True)  # 인덱스 필수
+    spam = pd.read_excel("data/김구_설문조사_공통만.xlsx")
+    spam = indexer.find_alternatives(spam, query_column="질문")
+    # spam = indexer.find_alternatives(spam, query_column="질문")
+    save_dataframe(spam, path=args.save_path, index=True)  # 인덱스 필수
 
 
 def update_ham_with_spam(args):

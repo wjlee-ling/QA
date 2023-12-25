@@ -49,7 +49,7 @@ class Indexer:
         where_filter: dict = None,
         where_doc_filter: dict = None,
     ):
-        results = self.collection.search(
+        results = self.collection.query(
             query_texts=queries,
             n_results=self.configs["n_results"],
             where=where_filter,
@@ -74,10 +74,12 @@ class Indexer:
             for j in range(self.configs["n_results"]):
                 try:
                     qa_alternative = (
-                        retrieved_queries[j] + retrieved_metadatas[j]["수정 답변"]
+                        retrieved_queries[j] + "\n" + retrieved_metadatas[j]["수정 답변"]
                     )
                 except:
-                    qa_alternative = retrieved_queries[j] + retrieved_metadatas[j]["답변"]
+                    qa_alternative = (
+                        retrieved_queries[j] + "\n" + retrieved_metadatas[j]["답변"]
+                    )
 
                 spam_df.loc[spam_df.index[i], f"유사QA{j+1}"] = qa_alternative
 

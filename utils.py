@@ -47,4 +47,6 @@ def save_dataframe(df, path: str, index: bool = True):
     """
     수정할 파일은 index = True, 수정을 적용한 최종 파일은 index = False
     """
+    if not path.endswith(".xlsx"):
+        path += ".xlsx"
     df.to_excel(path, index=index)
